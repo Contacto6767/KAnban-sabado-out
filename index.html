@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Brasil • Gestão de Tarefas</title>
+    <!-- Ícones Font Awesome para interface moderna -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Folha de estilo personalizada - Tema Brasil -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO DO SISTEMA COM PALETA TEMA BRASIL -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="brand-container">
+                <span class="flag-icon" title="Tema Brasil">🇧🇷</span>
+                <div>
+                    <h1 class="header-title">Kanban Brasil</h1>
+                    <span class="header-subtitle">Google Antigravity & SENAI</span>
+                </div>
+            </div>
+
+            <!-- NAVEGAÇÃO ENTRE ROTAS (QUADRO E DASHBOARD) -->
+            <nav class="nav-routes" aria-label="Navegação Principal">
+                <a href="#/" class="nav-link active" id="navKanban">
+                    <i class="fa-solid fa-table-columns"></i> Quadro
+                </a>
+                <a href="#/dashboard" class="nav-link" id="navDashboard">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </a>
+            </nav>
+        </div>
+
+        <div class="header-actions">
+            <!-- Botão para adicionar novo quadro (coluna personalizada) -->
+            <button id="btnOpenNewColumnModal" class="btn btn-secondary" title="Adicionar novo quadro ao Kanban">
+                <i class="fa-solid fa-folder-plus"></i> Novo Quadro
+            </button>
+            <!-- Botão para cadastrar nova tarefa -->
+            <button id="btnOpenNewTaskModal" class="btn btn-primary" title="Cadastrar nova tarefa">
+                <i class="fa-solid fa-plus"></i> Nova Tarefa
+            </button>
+        </div>
+    </header>
+
+    <!-- ROTA 1: QUADRO KANBAN -->
+    <main class="page-view active" id="view-kanban">
+        <div class="kanban-container" id="kanbanContainer">
+            <!-- Os quadros (fixos e dinâmicos) serão gerados dinamicamente via JS -->
+        </div>
+    </main>
+
+    <!-- ROTA 2: DASHBOARD -->
+    <main class="page-view" id="view-dashboard">
+        <div class="dashboard-container">
+            
+            <div class="dashboard-header-intro">
+                <h2><i class="fa-solid fa-chart-line"></i> Painel de Indicadores</h2>
+                <p>Estatísticas do fluxo de trabalho atualizadas em tempo real.</p>
+            </div>
+
+            <!-- GRADE COM OS 4 INDICADORES REQUISITADOS -->
+            <section class="metrics-grid">
+                <!-- 1. Concluídas -->
+                <div class="metric-card metric-done">
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Tarefas Concluídas</span>
+                        <span class="metric-value" id="metricDoneCount">0</span>
+                    </div>
+                </div>
+
+                <!-- 2. Em Execução -->
+                <div class="metric-card metric-doing">
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-person-running"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Em Execução</span>
+                        <span class="metric-value" id="metricDoingCount">0</span>
+                    </div>
+                </div>
+
+                <!-- 3. Pendentes -->
+                <div class="metric-card metric-pending">
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Tarefas Pendentes</span>
+                        <span class="metric-value" id="metricPendingCount">0</span>
+                    </div>
+                </div>
+
+                <!-- 4. Concluídas fora do prazo -->
+                <div class="metric-card metric-late">
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="metric-info">
+                        <span class="metric-label">Concluídas Fora do Prazo</span>
+                        <span class="metric-value" id="metricLateDoneCount">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GRADE DE GRÁFICOS ANALÍTICOS (COLUNA, PIZZA, LINHAS E COMPARATIVOS) -->
+            <div class="dashboard-charts-grid">
+                
+                <!-- 1. GRÁFICO DE COLUNAS: VOLUME POR QUADRO -->
+                <div class="dashboard-card-chart">
+                    <div class="section-title">
+                        <h3><i class="fa-solid fa-chart-column"></i> Volume por Quadro</h3>
+                        <span class="badge-theme">Gráfico de Coluna</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="chartColunas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 2. GRÁFICO DE PIZZA: DISTRIBUIÇÃO POR CATEGORIA -->
+                <div class="dashboard-card-chart">
+                    <div class="section-title">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Distribuição por Categoria</h3>
+                        <span class="badge-theme">Gráfico de Pizza</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="chartPizza"></canvas>
+                    </div>
+                </div>
+
+                <!-- 3. GRÁFICO DE LINHAS: EVOLUÇÃO E LINHA DO TEMPO -->
+                <div class="dashboard-card-chart">
+                    <div class="section-title">
+                        <h3><i class="fa-solid fa-chart-line"></i> Linha do Tempo (Atividades)</h3>
+                        <span class="badge-theme">Gráfico de Linhas</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="chartLinhas"></canvas>
+                    </div>
+                </div>
+
+                <!-- 4. GRÁFICO COMPARATIVO: NO PRAZO vs FORA DO PRAZO POR PRIORIDADE -->
+                <div class="dashboard-card-chart">
+                    <div class="section-title">
+                        <h3><i class="fa-solid fa-scale-balanced"></i> Comparativo de Prazos</h3>
+                        <span class="badge-theme">Gráfico Comparativo</span>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="chartComparativo"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- RODAPÉ TEMÁTICO COM EASTER EGG SUTIL -->
+    <footer class="app-footer">
+        <p>Kanban Brasil • Desenvolvido com HTML, CSS, JavaScript e jQuery • Persistência Local</p>
+        <!-- Frase preservada e escondidinha mas visível -->
+        <span class="easter-egg" title="Easter Egg Secreto">Breves é um cabeçudo</span>
+    </footer>
+
+    <!-- MODAL DE CADASTRO E EDIÇÃO DE TAREFAS -->
+    <div class="modal-backdrop" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"><i class="fa-solid fa-list-check"></i> Cadastrar Tarefa</h3>
+                <button type="button" class="btn-close-modal" id="btnCloseTaskModal">&times;</button>
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+
+                <div class="form-group">
+                    <label for="taskTitle">Título da Tarefa <span class="required">*</span></label>
+                    <input type="text" id="taskTitle" class="form-control" placeholder="Ex: Pesquisar biodiversidade brasileira" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">Descrição Detalhada</label>
+                    <textarea id="taskDescription" class="form-control" rows="3" placeholder="Informações complementares sobre a tarefa..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <!-- Categoria temática com comidas e frutas brasileiras -->
+                    <div class="form-group">
+                        <label for="taskCategory">Categoria <span class="required">*</span></label>
+                        <select id="taskCategory" class="form-control" required>
+                            <!-- Populado dinamicamente -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskDueDate">Data de Prazo <span class="required">*</span></label>
+                        <input type="date" id="taskDueDate" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskPriority">Prioridade</label>
+                        <select id="taskPriority" class="form-control">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskColumnTarget">Quadro Inicial</label>
+                        <select id="taskColumnTarget" class="form-control">
+                            <!-- Opções de quadros populadas dinamicamente -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelTaskModal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveTask">Salvar Tarefa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CRIAÇÃO E EDIÇÃO DE QUADROS PERSONALIZADOS -->
+    <div class="modal-backdrop" id="columnModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="columnModalTitle"><i class="fa-solid fa-folder-plus"></i> Novo Quadro</h3>
+                <button type="button" class="btn-close-modal" id="btnCloseColumnModal">&times;</button>
+            </div>
+            <form id="columnForm">
+                <input type="hidden" id="columnId">
+
+                <div class="form-group">
+                    <label for="columnTitle">Nome do Quadro <span class="required">*</span></label>
+                    <input type="text" id="columnTitle" class="form-control" placeholder="Ex: Em Revisão, Ideias, Testes..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="columnAnimal">Mascote da Fauna Brasileira <span class="required">*</span></label>
+                    <select id="columnAnimal" class="form-control" required>
+                        <!-- Populado dinamicamente com animais brasileiros -->
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="btnCancelColumnModal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveColumn">Salvar Quadro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL OBRIGATÓRIO PARA JUSTIFICATIVA DE TAREFAS VENCIDAS -->
+    <div class="modal-backdrop" id="overdueJustificationModal">
+        <div class="modal-content modal-warning">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> Tarefa Vencida!</h3>
+                <button type="button" class="btn-close-modal" id="btnCloseJustificationModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="warning-text">
+                    Esta tarefa ultrapassou o prazo estipulado. De acordo com as regras do sistema,
+                    <strong>é obrigatório registrar uma justificativa</strong> antes de movê-la para <strong>Concluído</strong>.
+                </p>
+                <form id="justificationForm">
+                    <input type="hidden" id="overdueTaskId">
+                    <div class="form-group">
+                        <label for="overdueNote">Justificativa do Atraso <span class="required">*</span></label>
+                        <textarea id="overdueNote" class="form-control" rows="4" placeholder="Descreva os motivos do atraso para arquivamento no histórico..." required></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancelJustificationModal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="btnConfirmJustification">Confirmar e Concluir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- BIBLIOTECA JQUERY VIA CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- BIBLIOTECA CHART.JS PARA GRÁFICOS INTERATIVOS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SCRIPT DA APLICAÇÃO -->
+    <script src="script.js"></script>
+</body>
+</html>

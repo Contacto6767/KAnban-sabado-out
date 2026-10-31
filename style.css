@@ -1,0 +1,823 @@
+/* ==========================================================================
+   TEMA BRASIL - DESIGN SYSTEM (KANBAN & DASHBOARD)
+   Paleta estritamente restrita a: Azul, Amarelo, Verde e Branco
+   Acessibilidade e contraste conforme as diretrizes WCAG AA
+   ========================================================================== */
+
+:root {
+    /* --- PALETA AZUL --- */
+    --br-blue-dark: #002244;       /* Azul marinho profundo (texto de altíssimo contraste) */
+    --br-blue: #0047b3;            /* Azul vibrante brasileiro */
+    --br-blue-hover: #003380;      /* Azul escuro interativo */
+    --br-blue-subtle: #eef5fc;     /* Fundo suave azul */
+    --br-blue-border: #b8d4f7;     /* Borda azul suave */
+
+    /* --- PALETA VERDE --- */
+    --br-green-dark: #004d20;      /* Verde escuro para texto e ênfase */
+    --br-green: #008736;           /* Verde oficial da bandeira */
+    --br-green-hover: #00682a;     /* Verde interativo */
+    --br-green-subtle: #eaf7ef;    /* Fundo suave verde */
+    --br-green-border: #a8e3bd;    /* Borda verde suave */
+
+    /* --- PALETA AMARELO --- */
+    --br-yellow-dark: #6e5100;     /* Amarelo queimado para texto com contraste em fundo claro */
+    --br-yellow: #fed000;          /* Amarelo ouro da bandeira */
+    --br-yellow-hover: #e5bb00;    /* Amarelo interativo */
+    --br-yellow-subtle: #fffbe6;   /* Fundo suave amarelo */
+    --br-yellow-border: #fae489;   /* Borda amarela suave */
+
+    /* --- PALETA BRANCO / NEUTROS --- */
+    --br-white: #ffffff;           /* Branco puro */
+    --br-offwhite: #f7faf8;        /* Branco suave com leve toque esmeralda */
+    --br-surface: #ffffff;         /* Superfície dos cards */
+
+    /* Tipografia e Estrutura */
+    --text-primary: var(--br-blue-dark);
+    --text-secondary: #264a70;
+    --text-light: var(--br-white);
+
+    /* Raios e Sombras */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-card: 0 4px 14px rgba(0, 34, 68, 0.08);
+    --shadow-hover: 0 8px 24px rgba(0, 34, 68, 0.15);
+}
+
+/* Reset Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--br-offwhite);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   CABEÇALHO E NAVEGAÇÃO ENTRE ROTAS
+   -------------------------------------------------------------------------- */
+.app-header {
+    background: var(--br-blue-dark);
+    border-bottom: 4px solid var(--br-green);
+    padding: 0.85rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 34, 68, 0.2);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.flag-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.header-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--br-white);
+    letter-spacing: 0.3px;
+}
+
+.header-subtitle {
+    font-size: 0.75rem;
+    color: var(--br-yellow);
+    font-weight: 600;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+/* Abas de Navegação (Rotas SPA) */
+.nav-routes {
+    display: flex;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nav-link {
+    color: var(--br-white);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.nav-link.active {
+    background: var(--br-yellow);
+    color: var(--br-blue-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Botões do Topo */
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--br-green);
+    color: var(--br-white);
+    box-shadow: 0 2px 6px rgba(0, 77, 32, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--br-green-hover);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--br-white);
+    color: var(--br-blue-dark);
+    border: 1px solid var(--br-blue-border);
+}
+
+.btn-secondary:hover {
+    background: var(--br-blue-subtle);
+    color: var(--br-blue);
+}
+
+.btn-danger {
+    background: var(--br-blue-dark);
+    color: var(--br-yellow);
+    border: 1px solid var(--br-yellow);
+}
+
+.btn-danger:hover {
+    background: #00152b;
+}
+
+/* --------------------------------------------------------------------------
+   SISTEMA DE VISUALIZAÇÃO DE ROTAS (PÁGINAS SPA)
+   -------------------------------------------------------------------------- */
+.page-view {
+    display: none;
+    flex: 1;
+    width: 100%;
+}
+
+.page-view.active {
+    display: block;
+}
+
+/* --------------------------------------------------------------------------
+   ROTA 1: QUADROS KANBAN (SUPORTE A NOVOS QUADROS DINÂMICOS)
+   -------------------------------------------------------------------------- */
+.kanban-container {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    overflow-x: auto;
+    min-height: calc(100vh - 160px);
+}
+
+.kanban-column {
+    background: var(--br-white);
+    border: 2px solid var(--br-border-blue, #d9e6f7);
+    border-radius: var(--radius-md);
+    width: 320px;
+    min-width: 320px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.kanban-column.drag-over {
+    border-color: var(--br-green);
+    background-color: var(--br-green-subtle);
+}
+
+/* Cabeçalho da Coluna */
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid var(--br-blue-subtle);
+}
+
+.column-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.column-animal-icon {
+    font-size: 1.3rem;
+    background: var(--br-yellow-subtle);
+    border: 1px solid var(--br-yellow-border);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--br-blue-dark);
+}
+
+.column-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-count {
+    background: var(--br-blue-subtle);
+    color: var(--br-blue-dark);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: 1px solid var(--br-blue-border);
+}
+
+.btn-column-action {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.btn-column-action:hover {
+    color: var(--br-blue);
+    background: var(--br-blue-subtle);
+}
+
+/* Lista de Cards da Coluna */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-height: 350px;
+}
+
+/* Estado Vazio de Coluna */
+.empty-column-state {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    background: var(--br-offwhite);
+    border: 1px dashed var(--br-blue-border);
+    border-radius: var(--radius-sm);
+    margin: auto 0;
+}
+
+.empty-food-icon {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   CARDS DE TAREFA
+   -------------------------------------------------------------------------- */
+.task-card {
+    background: var(--br-white);
+    border: 1px solid #d4e3f5;
+    border-left: 4px solid var(--br-blue);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem;
+    cursor: grab;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 34, 68, 0.05);
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+    border-color: var(--br-blue);
+}
+
+.task-card.dragging {
+    opacity: 0.45;
+    cursor: grabbing;
+}
+
+/* Tarefas Concluídas (Bloqueadas) */
+.task-card.card-completed {
+    border-left-color: var(--br-green);
+    background: #fdfefe;
+    cursor: default;
+}
+
+.card-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-category-badge {
+    background: var(--br-yellow-subtle);
+    color: var(--br-yellow-dark);
+    border: 1px solid var(--br-yellow-border);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-card-action {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 3px 5px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.btn-card-action:hover {
+    color: var(--br-blue);
+    background: var(--br-blue-subtle);
+}
+
+.btn-card-action.btn-complete-quick {
+    color: var(--br-green);
+}
+.btn-card-action.btn-complete-quick:hover {
+    background: var(--br-green-subtle);
+}
+
+.card-title {
+    font-size: 0.94rem;
+    font-weight: 700;
+    color: var(--br-blue-dark);
+    margin-bottom: 0.35rem;
+    line-height: 1.35;
+}
+
+.card-desc {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 0.7rem;
+    word-break: break-word;
+}
+
+/* Rodapé do Card */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #edf2f7;
+    padding-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.priority-pill {
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+}
+.priority-baixa { background: var(--br-green-subtle); color: var(--br-green-dark); }
+.priority-media { background: var(--br-yellow-subtle); color: var(--br-yellow-dark); }
+.priority-alta { background: #feebeb; color: #a80000; }
+
+.deadline-pill {
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.deadline-pill.overdue {
+    color: #a80000;
+    font-weight: 700;
+}
+
+.deadline-pill.concluded {
+    color: var(--br-green);
+    font-weight: 700;
+}
+
+.card-justification-note {
+    margin-top: 0.6rem;
+    background: var(--br-yellow-subtle);
+    border-left: 3px solid var(--br-yellow-dark);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.74rem;
+    color: var(--br-yellow-dark);
+    border-radius: 0 4px 4px 0;
+}
+
+/* --------------------------------------------------------------------------
+   ROTA 2: DASHBOARD
+   -------------------------------------------------------------------------- */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.dashboard-header-intro {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-header-intro h2 {
+    font-size: 1.4rem;
+    color: var(--br-blue-dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-header-intro p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* Grade de Indicadores (4 Cards) */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: var(--br-white);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--br-blue-border);
+    transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.metric-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.metric-done .metric-icon {
+    background: var(--br-green-subtle);
+    color: var(--br-green);
+    border: 1px solid var(--br-green-border);
+}
+
+.metric-doing .metric-icon {
+    background: var(--br-blue-subtle);
+    color: var(--br-blue);
+    border: 1px solid var(--br-blue-border);
+}
+
+.metric-pending .metric-icon {
+    background: var(--br-yellow-subtle);
+    color: var(--br-yellow-dark);
+    border: 1px solid var(--br-yellow-border);
+}
+
+.metric-late .metric-icon {
+    background: #fff3d6;
+    color: #9c5c00;
+    border: 1px solid #fed000;
+}
+
+.metric-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--br-blue-dark);
+}
+
+/* Seção de Gráficos e Detalhes do Dashboard */
+.dashboard-section {
+    background: var(--br-white);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--br-blue-border);
+    padding: 1.4rem;
+    box-shadow: var(--shadow-card);
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid var(--br-blue-subtle);
+    padding-bottom: 0.6rem;
+}
+
+.section-title h3 {
+    font-size: 1.05rem;
+    color: var(--br-blue-dark);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge-theme {
+    background: var(--br-green-subtle);
+    color: var(--br-green-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--br-green-border);
+}
+
+/* Grade dos 4 Gráficos do Dashboard */
+.dashboard-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.dashboard-card-chart {
+    background: var(--br-white);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--br-blue-border);
+    padding: 1.3rem;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+}
+
+.canvas-container {
+    position: relative;
+    height: 270px;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   MODAIS
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 34, 68, 0.65);
+    backdrop-filter: blur(3px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--br-white);
+    border-radius: var(--radius-md);
+    width: 90%;
+    max-width: 520px;
+    padding: 1.6rem;
+    box-shadow: var(--shadow-hover);
+    border: 2px solid var(--br-blue-border);
+    animation: fadeInModal 0.2s ease-out;
+}
+
+.modal-warning {
+    border-left: 6px solid var(--br-yellow-dark);
+}
+
+@keyframes fadeInModal {
+    from { transform: translateY(-15px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid var(--br-blue-subtle);
+    padding-bottom: 0.8rem;
+}
+
+.modal-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--br-blue-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-close-modal {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--br-blue-dark);
+}
+
+.required {
+    color: #b50000;
+}
+
+.form-control {
+    width: 100%;
+    padding: 9px 12px;
+    background: var(--br-white);
+    border: 1px solid var(--br-blue-border);
+    border-radius: var(--radius-sm);
+    color: var(--br-blue-dark);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--br-blue);
+    box-shadow: 0 0 0 3px rgba(0, 71, 179, 0.15);
+}
+
+.warning-text {
+    font-size: 0.86rem;
+    color: var(--text-primary);
+    line-height: 1.45;
+    margin-bottom: 1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   RODAPÉ E EASTER EGG SUTIL
+   -------------------------------------------------------------------------- */
+.app-footer {
+    text-align: center;
+    padding: 1.2rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: var(--br-white);
+    border-top: 1px solid var(--br-blue-border);
+    margin-top: auto;
+}
+
+/* Frase solicitada mantida: bem escondidinha mas visível */
+.easter-egg {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 0.72rem;
+    color: #9cb5cf; /* Sutil, integrando ao azul clarinho */
+    cursor: default;
+    transition: color 0.3s ease;
+    user-select: none;
+}
+
+.easter-egg:hover {
+    color: var(--br-blue-dark);
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVIDADE (CELULAR E TABLET)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dashboard-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    .header-left {
+        justify-content: space-between;
+    }
+    .header-actions {
+        justify-content: space-between;
+    }
+    .kanban-container {
+        flex-direction: column;
+    }
+    .kanban-column {
+        width: 100%;
+        min-width: 100%;
+    }
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
